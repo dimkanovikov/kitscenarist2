@@ -193,6 +193,8 @@ SOURCES += \
     ui/modules/comments/comments_toolbar.cpp \
     ui/modules/comments/comments_view.cpp \
     ui/modules/logline_generator/logline_generator_dialog.cpp \
+    ui/modules/script_text_edit/handlers/abstract_key_handler.cpp \
+    ui/modules/script_text_edit/script_text_edit.cpp \
     ui/widgets/animations/click_animation.cpp \
     ui/widgets/app_bar/app_bar.cpp \
     ui/widgets/button/button.cpp \
@@ -437,6 +439,8 @@ HEADERS += \
     ui/modules/comments/comments_toolbar.h \
     ui/modules/comments/comments_view.h \
     ui/modules/logline_generator/logline_generator_dialog.h \
+    ui/modules/script_text_edit/handlers/abstract_key_handler.h \
+    ui/modules/script_text_edit/script_text_edit.h \
     ui/widgets/animations/click_animation.h \
     ui/widgets/app_bar/app_bar.h \
     ui/widgets/button/button.h \
