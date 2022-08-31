@@ -116,6 +116,7 @@ void OnboardingView::Implementation::initLanguagePage()
     auto hungarianLanguage = initLanguageButton("Magyar", QLocale::Hungarian, 46);
     auto indonesianLanguage = initLanguageButton("Indonesian", QLocale::Indonesian, 13);
     auto italianLanguage = initLanguageButton("Italiano", QLocale::Italian, 38);
+    auto kannadaLanguage = initLanguageButton("ಕನ್ನಡ", QLocale::Kannada, 100);
     auto koreanLanguage = initLanguageButton("한국어", QLocale::Korean, 100);
     auto persianLanguage = initLanguageButton("فارسی", QLocale::Persian, 82);
     auto polishLanguage = initLanguageButton("Polski", QLocale::Polish, 41);
@@ -194,8 +195,9 @@ void OnboardingView::Implementation::initLanguagePage()
         chineseLanguage,
         hebrewLanguage,
         hindiLanguage,
-        persianLanguage,
         tamilLanguage,
+        kannadaLanguage,
+        persianLanguage,
         koreanLanguage,
     });
 
@@ -251,8 +253,9 @@ void OnboardingView::Implementation::initLanguagePage()
     languagePageLayout->addWidget(chineseLanguage, rowForFifthColumn++, 3);
     languagePageLayout->addWidget(hebrewLanguage, rowForFifthColumn++, 3);
     languagePageLayout->addWidget(hindiLanguage, rowForFifthColumn++, 3);
-    languagePageLayout->addWidget(persianLanguage, rowForFifthColumn++, 3);
     languagePageLayout->addWidget(tamilLanguage, rowForFifthColumn++, 3);
+    languagePageLayout->addWidget(kannadaLanguage, rowForFifthColumn++, 3);
+    languagePageLayout->addWidget(persianLanguage, rowForFifthColumn++, 3);
     languagePageLayout->addWidget(koreanLanguage, rowForFifthColumn++, 3);
     languagePageLayout->setRowStretch(row++, 1);
     languagePageLayout->setColumnStretch(4, 1);

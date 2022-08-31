@@ -36,6 +36,7 @@ TRANSLATIONS += \
     core/translations/translation_hu.ts \
     core/translations/translation_id.ts \
     core/translations/translation_it.ts \
+    core/translations/translation_kn.ts \
     core/translations/translation_ko.ts \
     core/translations/translation_nl.ts \
     core/translations/translation_pl.ts \
