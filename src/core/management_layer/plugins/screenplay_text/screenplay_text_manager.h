@@ -15,7 +15,8 @@ namespace ManagementLayer {
 class MANAGER_PLUGIN_EXPORT ScreenplayTextManager : public QObject, public IDocumentManager
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "app.starc.ManagementLayer.IDocumentManager")
+    Q_PLUGIN_METADATA(IID "app.starc.ManagementLayer.IDocumentManager" FILE
+                          "screenplaytextmanager.json")
     Q_INTERFACES(ManagementLayer::IDocumentManager)
 
 public:

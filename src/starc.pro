@@ -9,6 +9,8 @@ SUBDIRS += \
 #    starcapi \
     testapp
 
+app.depends = core
+
 CONFIG += ordered
 
 HEADERS += \

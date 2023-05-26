@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <QStandardPaths>
+#include <QtPlugin>
 
 using ManagementLayer::IApplicationManager;
 
@@ -15,6 +16,14 @@ using ManagementLayer::IApplicationManager;
  */
 QObject* loadApplicationManager()
 {
+    const auto staticInstances = QPluginLoader::staticInstances();
+    for (QObject* plugin : staticInstances) {
+        if (qobject_cast<IApplicationManager*>(plugin)) {
+            return plugin;
+        }
+    }
+
+
     //
     // Смотрим папку с данными приложения на компе
     // NOTE: В Debug-режим работает с папкой сборки приложения
@@ -99,6 +108,9 @@ QObject* loadApplicationManager()
 
     return plugin;
 }
+
+Q_IMPORT_PLUGIN(ApplicationManager)
+Q_IMPORT_PLUGIN(ScreenplayTextManager)
 
 /**
  * @brief Погнали!

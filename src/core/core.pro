@@ -6,7 +6,7 @@
 
 TEMPLATE = lib
 
-CONFIG += plugin c++1z
+CONFIG += plugin c++1z static
 CONFIG += force_debug_info
 CONFIG += separate_debug_info
 QT += concurrent widgets multimedia network sql

@@ -285,6 +285,14 @@ public:
 Ui::IDocumentView* PluginsBuilder::Implementation::activatePlugin(
     const QString& _mimeType, BusinessLayer::AbstractModel* _model, ViewType _type)
 {
+    const auto staticInstances = QPluginLoader::staticInstances();
+    for (auto pluginObject : staticInstances) {
+        auto plugin = qobject_cast<ManagementLayer::IDocumentManager*>(pluginObject);
+        if (plugin) {
+            plugins.insert("application/x-starc/editor/screenplay/text/text", plugin);
+        }
+    }
+
     if (!plugins.contains(_mimeType)) {
         //
         // Смотрим папку с данными приложения на компе

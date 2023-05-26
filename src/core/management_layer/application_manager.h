@@ -15,7 +15,8 @@ namespace ManagementLayer {
 class CORE_PLUGIN_EXPORT ApplicationManager : public QObject, IApplicationManager
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "app.starc.ManagementLayer.IApplicationManager")
+    Q_PLUGIN_METADATA(IID "app.starc.ManagementLayer.IApplicationManager" FILE
+                          "applicationmanager.json")
     Q_INTERFACES(ManagementLayer::IApplicationManager)
 
 public:
