@@ -11,6 +11,7 @@ struct AccountInfo;
 
 namespace Ui {
 enum class ApplicationTheme;
+enum class ApplicationToImportSettings;
 
 /**
  * @brief Навигатор по посадочным страницам
@@ -48,6 +49,12 @@ public:
      */
     void setAccountInfo(const Domain::AccountInfo& _accountInfo);
 
+    /**
+     * @brief Тема выбранная пользователем на первом шаге
+     * @return Светлая/тёмная/смешанная тема
+     */
+    Ui::ApplicationTheme getSelectedTheme() const;
+
 signals:
     /**
      * @brief Пользователь выбрал язык приложения
@@ -58,6 +65,11 @@ signals:
      * @brief Пользователь выбрал тему приложения
      */
     void themeChanged(Ui::ApplicationTheme _theme);
+
+    /**
+     * @brief Пользователь выбрал приложение для импорта цветовой схемы
+     */
+    void competitorColorSchemeSelected(QString _color);
 
     /**
      * @brief Пользователь изменил масштаб интерфейса
@@ -100,6 +112,8 @@ protected:
 private:
     class Implementation;
     QScopedPointer<Implementation> d;
+
+    Ui::ApplicationTheme selectedTheme;
 };
 
 } // namespace Ui

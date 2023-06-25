@@ -113,6 +113,23 @@ SettingsStorage::Implementation::Implementation()
     defaultValues.insert(kApplicationSmartQuotesKey, false);
     defaultValues.insert(kApplicationReplaceTwoDashesWithEmDashKey, false);
     defaultValues.insert(kApplicationAvoidMultipleSpacesKey, false);
+    defaultValues.insert(kApplicationCompetitorThemesLigthKey,
+                         "KIT Scenarist:ffffff38393a4285f4f8f8f2e4e4e438393af6f6f6000000ec3740f8f8f2000000f8f8f2fefefe000000;"
+                         "Final Draft:f4eef02626264285f4f8f8f2f6eff3494748ececec000000ec3740f8f8f2000000f8f8f2fefefe000000;"
+                         "Arc Studio Pro:ffffff3333334c26b5f8f8f2ffffff333333f9fafc000000ec3740f8f8f2000000f8f8f2ffffff333333;"
+                         "Fade In:f0f0f00000004196e5f8f8f2e3e3e3141414efefef141414ec3740f8f8f2000000f8f8f2ffffff000000;"
+                         "Writer Duet:3a4b59ffffff049effffffff3a4b59ffffff8aa5beffffffec3740f8f8f2000000f8f8f2ffffff000000;"
+                         "Highland2:3f4752c4cace37aacfffffffffffff2d333bffffff2d333bec3740f8f8f2000000f8f8f2ffffff2d333b;"
+                         "Trelby;ebe7e537383fda924bfffffff6f6f7000000ededed37383fec3740f8f8f2000000f8f8f2ffffff000000;");
+    defaultValues.insert(kApplicationCompetitorThemesDarkKey,
+                         "KIT Scenarist:404040ebebeb4285f4f8f8f2414244ebebeb26282affffffec3740f8f8f2000000f8f8f23d3d3df8f8f2;"
+                         "Final Draft:312529ebebeb4285f4f8f8f23f383ce3e3e3222222f8f8f2ec3740f8f8f2000000f8f8f2444444ffffff;"
+                         "Arc Studio Pro:1d1f21d9dbde7971fcf8f8f21d1f21ebebeb101113f8f8f2ec3740f8f8f2000000f8f8f2161719ffffff;"
+                         "Fade In:202020f6f6f54196e5f8f8f2414141fefefe202020f8f8f2ec3740f8f8f2000000f8f8f2373737f3f3f3;"
+                         "Writer Duet:3a4b59ffffff049effffffff3a4b59ffffff17232edde5ebec3740f8f8f2000000f8f8f22d3b48ffffff;"
+                         "Highland2:111111888888b26894ffffff000000aaaaaa000000aaaaaaec3740f8f8f2000000f8f8f2000000aaaaaa;"
+                         "Trelby;f2f2f21f1f1fda924bfffffff2f2f21f1f1f1f3142b5c1cdec3740f8f8f2000000f8f8f2182430d3dce9;");
+
     defaultValues.insert(kProjectTypeKey, 0);
     defaultValues.insert(kProjectSaveFolderKey,
                          QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)

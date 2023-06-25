@@ -91,7 +91,12 @@ const QString kApplicationReplaceTwoDashesWithEmDashKey
 const QString kApplicationAvoidMultipleSpacesKey = kApplicationGroupKey + "/avoid-multiple-spaces";
 // список недавних проектов
 const QString kApplicationProjectsKey = kApplicationGroupKey + "/projects";
-
+// светлые цветовые темы "конкурентов" в формате [название1:хэш_темы1;название2:хэш_темы2;....]
+const QString kApplicationCompetitorThemesLigthKey
+    = kApplicationGroupKey + "/competitor-themes-light";
+// тёмные цветовые темы "конкурентов" в формате [название1:хэш_темы1;название2:хэш_темы2;....]
+const QString kApplicationCompetitorThemesDarkKey
+    = kApplicationGroupKey + "/competitor-themes-dark";
 //
 // Аккаунт
 //

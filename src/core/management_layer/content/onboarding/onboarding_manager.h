@@ -65,6 +65,11 @@ signals:
     void themeChanged(Ui::ApplicationTheme _theme);
 
     /**
+     * @brief Пользователь выбрал тему приложения как у конкурента
+     */
+    void themeChangedCustom(QString _color);
+
+    /**
      * @brief Пользователь изменил масштаб интерфейса
      */
     void scaleFactorChanged(qreal _scaleFactor);

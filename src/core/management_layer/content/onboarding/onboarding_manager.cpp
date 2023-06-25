@@ -45,6 +45,8 @@ OnboardingManager::OnboardingManager(QObject* _parent, QWidget* _parentWidget)
             &OnboardingManager::languageChanged);
     connect(d->navigator, &Ui::OnboardingNavigator::themeChanged, this,
             &OnboardingManager::themeChanged);
+    connect(d->navigator, &Ui::OnboardingNavigator::competitorColorSchemeSelected, this,
+            &OnboardingManager::themeChangedCustom);
     connect(d->navigator, &Ui::OnboardingNavigator::scaleFactorChanged, this,
             &OnboardingManager::scaleFactorChanged);
     connect(d->navigator, &Ui::OnboardingNavigator::signInPressed, this,

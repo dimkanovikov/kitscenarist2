@@ -18,6 +18,7 @@
 #include <utils/tools/debouncer.h>
 #include <utils/validators/email_validator.h>
 
+#include <map>
 #include <QBoxLayout>
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -30,6 +31,47 @@ enum LanguageRoles {
     LanguageRole = Qt::UserRole + 1,
     LanguageTranslatedRole,
 };
+
+void addToggleWithTitle(QVBoxLayout* pageLayout, Toggle* _toggle, AbstractLabel* _label) {
+    auto layout = new QHBoxLayout;
+    layout->setContentsMargins({});
+    layout->setSpacing(0);
+    layout->addWidget(_toggle);
+    layout->addWidget(_label, 1, Qt::AlignVCenter);
+    pageLayout->addLayout(layout);
+};
+
+const std::unordered_map<QString, QString>& getCompetitirColorSchemes(Ui::ApplicationTheme _theme) {
+    static std::unordered_map<QString, QString> lightSchemes;
+    static std::unordered_map<QString, QString> darkSchemes;
+
+    if (lightSchemes.empty()) {
+        for(auto & elem:
+             settingsValue(DataStorageLayer::kApplicationCompetitorThemesLigthKey).toString().split(';')) {
+            const auto key_val = elem.split(':');
+            if (key_val.length() == 2) {
+                lightSchemes[key_val[0]] = key_val[1];
+            }
+        }
+    }
+
+    if (darkSchemes.empty()) {
+        for(auto & elem:
+             settingsValue(DataStorageLayer::kApplicationCompetitorThemesDarkKey).toString().split(';')) {
+            const auto key_val = elem.split(':');
+            if (key_val.length() == 2) {
+                darkSchemes[key_val[0]] = key_val[1];
+            }
+        }
+    }
+
+    if (_theme == Ui::ApplicationTheme::Light) {
+        return lightSchemes;
+    } else {
+        return darkSchemes;
+    }
+
+}
 
 } // namespace
 
@@ -45,6 +87,7 @@ public:
     void initSignUpPage();
     void initAccountPage();
     void initModulesPage();
+    void initStyleChoosePage();
     void initBackupsPage();
     void initSocialPage();
 
@@ -113,6 +156,17 @@ public:
     Toggle* modulesNovelToggle = nullptr;
     Body1Label* modulesNovelTitle = nullptr;
     Button* modulesContinueButton = nullptr;
+
+    Widget* styleChoosePage = nullptr;
+    ImageLabel* styleChooseLogo = nullptr;
+    H6Label* styleChooseTitle = nullptr;
+    Body2Label* styleChooseSubtitle = nullptr;
+    Subtitle1Label* styleChooseDescription = nullptr;
+    ComboBox* styleChooseComboBox = nullptr;
+    QStandardItemModel* styleChooseModel = nullptr;
+    Toggle* styleChooseActivateToggle = nullptr;
+    Body1Label* styleChooseActivateTitle = nullptr;
+    Button* styleChooseContinueButton = nullptr;
 
     Widget* backupsPage = nullptr;
     ImageLabel* backupsLogo = nullptr;
@@ -190,6 +244,17 @@ OnboardingNavigator::Implementation::Implementation(OnboardingNavigator* _q)
     , modulesNovelTitle(new Body1Label(modulesPage))
     , modulesContinueButton(new Button(modulesPage))
     //
+    , styleChoosePage(new Widget(q))
+    , styleChooseLogo(new ImageLabel(styleChoosePage))
+    , styleChooseTitle(new H6Label(styleChoosePage))
+    , styleChooseSubtitle(new Body2Label(styleChoosePage))
+    , styleChooseDescription(new Subtitle1Label(styleChoosePage))
+    , styleChooseComboBox(new ComboBox(styleChoosePage))
+    , styleChooseModel(new QStandardItemModel(styleChooseComboBox))
+    , styleChooseActivateToggle(new Toggle(styleChoosePage))
+    , styleChooseActivateTitle(new Body1Label(styleChoosePage))
+    , styleChooseContinueButton(new Button(styleChoosePage))
+    //
     , backupsPage(new Widget(q))
     , backupsLogo(new ImageLabel(backupsPage))
     , backupsTitle(new H6Label(backupsPage))
@@ -213,6 +278,7 @@ OnboardingNavigator::Implementation::Implementation(OnboardingNavigator* _q)
     initSignUpPage();
     initAccountPage();
     initModulesPage();
+    initStyleChoosePage();
     initBackupsPage();
     initSocialPage();
 }
@@ -390,22 +456,41 @@ void OnboardingNavigator::Implementation::initModulesPage()
     pageLayout->addWidget(modulesTitle);
     pageLayout->addWidget(modulesSubtitle);
     pageLayout->addWidget(modulesDescription);
-    auto addToggleWithTitle = [&pageLayout](Toggle* _toggle, AbstractLabel* _label) {
-        auto layout = new QHBoxLayout;
-        layout->setContentsMargins({});
-        layout->setSpacing(0);
-        layout->addWidget(_toggle);
-        layout->addWidget(_label, 1, Qt::AlignVCenter);
-        pageLayout->addLayout(layout);
-    };
-    addToggleWithTitle(modulesScreenplayToggle, modulesScreenplayTitle);
-    addToggleWithTitle(modulesComicBookToggle, modulesComicBookTitle);
-    addToggleWithTitle(modulesAudioplayToggle, modulesAudioplayTitle);
-    addToggleWithTitle(modulesStageplayToggle, modulesStageplayTitle);
-    addToggleWithTitle(modulesNovelToggle, modulesNovelTitle);
+
+    addToggleWithTitle(pageLayout, modulesScreenplayToggle, modulesScreenplayTitle);
+    addToggleWithTitle(pageLayout, modulesComicBookToggle, modulesComicBookTitle);
+    addToggleWithTitle(pageLayout, modulesAudioplayToggle, modulesAudioplayTitle);
+    addToggleWithTitle(pageLayout, modulesStageplayToggle, modulesStageplayTitle);
+    addToggleWithTitle(pageLayout, modulesNovelToggle, modulesNovelTitle);
     pageLayout->addStretch();
     pageLayout->addWidget(modulesContinueButton);
     modulesPage->setLayout(pageLayout);
+}
+
+void OnboardingNavigator::Implementation::initStyleChoosePage()
+{
+    styleChooseLogo->setImage(QPixmap(":/images/logo"));
+    styleChooseTitle->setAlignment(Qt::AlignCenter);
+    styleChooseSubtitle->setAlignment(Qt::AlignCenter);
+    styleChooseContinueButton->setContained(true);
+
+    for (const auto& app: getCompetitirColorSchemes(q->getSelectedTheme())) {
+        styleChooseModel->appendRow(new QStandardItem(app.first));
+    }
+    styleChooseComboBox->setModel(styleChooseModel);
+
+    auto pageLayout = new QVBoxLayout;
+    pageLayout->setContentsMargins({});
+    pageLayout->setSpacing(0);
+    pageLayout->addWidget(styleChooseLogo, 0, Qt::AlignHCenter);
+    pageLayout->addWidget(styleChooseTitle);
+    pageLayout->addWidget(styleChooseSubtitle);
+    pageLayout->addWidget(styleChooseDescription);
+    addToggleWithTitle(pageLayout, styleChooseActivateToggle, styleChooseActivateTitle);
+    pageLayout->addWidget(styleChooseComboBox);
+    pageLayout->addStretch();
+    pageLayout->addWidget(styleChooseContinueButton);
+    styleChoosePage->setLayout(pageLayout);
 }
 
 void OnboardingNavigator::Implementation::initBackupsPage()
@@ -483,12 +568,14 @@ void OnboardingNavigator::Implementation::updateAccountAvatar()
 OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
     : StackWidget(_parent)
     , d(new Implementation(this))
+    , selectedTheme(Ui::ApplicationTheme::Light)
 {
     setAnimationType(AnimationType::Slide);
 
     setCurrentWidget(d->uiPage);
     addWidget(d->signInPage);
     addWidget(d->accountPage);
+    addWidget(d->styleChoosePage);
     addWidget(d->modulesPage);
     addWidget(d->backupsPage);
     addWidget(d->socialPage);
@@ -511,6 +598,10 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
          }) {
         connect(themePreview, &ThemePreview::themePressed, this,
                 &OnboardingNavigator::themeChanged);
+
+        connect(themePreview, &ThemePreview::themePressed, this, [this](Ui::ApplicationTheme _theme) {
+            selectedTheme = _theme;
+        });
     }
     connect(d->uiScaleSlider, &Slider::valueChanged, this, [this](int _value) {
         emit scaleFactorChanged(0.5 + static_cast<qreal>(_value) / 1000.0);
@@ -561,7 +652,7 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
     });
     connect(d->signInResendCodeButton, &Button::clicked, d->signInSignInButton, &Button::click);
     connect(d->signInContinueButton, &Button::clicked, this,
-            [this] { setCurrentWidget(d->modulesPage); });
+            [this] { setCurrentWidget(d->styleChoosePage); });
     //
     auto notifyAccountChanged = [this] {
         emit accountInfoChanged(d->accountInfo.email, d->accountInfo.name,
@@ -620,7 +711,7 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
         notifyAccountChanged();
     });
     connect(d->accountContinueButton, &Button::clicked, this,
-            [this] { setCurrentWidget(d->modulesPage); });
+            [this] { setCurrentWidget(d->styleChoosePage); });
     //
     connect(d->modulesScreenplayToggle, &Toggle::checkedChanged, this, [](bool _checked) {
         setSettingsValue(DataStorageLayer::kComponentsScreenplayAvailableKey, _checked);
@@ -639,6 +730,17 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
     });
     connect(d->modulesContinueButton, &Button::clicked, this,
             [this] { setCurrentWidget(d->backupsPage); });
+    //
+    connect(d->styleChooseActivateToggle, &Toggle::checkedChanged, this, [this](bool _checked) {
+        d->styleChooseComboBox->setReadOnly(!_checked);
+    });
+    connect(d->styleChooseContinueButton, &Button::clicked, this,
+            [this] {setCurrentWidget(d->modulesPage); });
+    connect(d->styleChooseComboBox, &ComboBox::currentIndexChanged, this, [this](const QModelIndex& _index) {
+        const auto &color = getCompetitirColorSchemes(getSelectedTheme()).at(_index.data().toString());
+        emit competitorColorSchemeSelected(color);
+    });
+
     //
     connect(d->backupsContinueButton, &Button::clicked, this,
             [this] { setCurrentWidget(d->socialPage); });
@@ -714,6 +816,11 @@ void OnboardingNavigator::setAccountInfo(const Domain::AccountInfo& _accountInfo
     }
 }
 
+ApplicationTheme OnboardingNavigator::getSelectedTheme() const
+{
+    return selectedTheme;
+}
+
 void OnboardingNavigator::updateTranslations()
 {
     d->uiTitle->setText(tr("Welcome to the Story Architect"));
@@ -759,6 +866,14 @@ void OnboardingNavigator::updateTranslations()
     d->modulesStageplayTitle->setText(tr("Stageplay"));
     d->modulesNovelTitle->setText(tr("Novel"));
     d->modulesContinueButton->setText(tr("Continue"));
+
+    d->styleChooseTitle->setText(tr("Customize your workspace"));
+    d->styleChooseSubtitle->setText(tr("Feel at home"));
+    d->styleChooseDescription->setText(
+        tr("You can choose an application to import settings from"));
+    d->styleChooseContinueButton->setText(tr("Continue"));
+    d->styleChooseComboBox->setLabel(tr("Application"));
+    d->styleChooseActivateTitle->setText(tr("Adapt interface and behaviour like in application"));
 
     d->backupsTitle->setText(tr("Before you get started"));
     d->backupsSubtitle->setText(tr("Feel our care"));
@@ -837,6 +952,13 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
              d->backupsSubtitle,
              d->backupsDescription,
              //
+             d->styleChoosePage,
+             d->styleChooseLogo,
+             d->styleChooseTitle,
+             d->styleChooseSubtitle,
+             d->styleChooseDescription,
+             d->styleChooseActivateTitle,
+             //
              d->socialPage,
              d->socialLogo,
              d->socialTitle,
@@ -870,6 +992,11 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
     d->modulesSubtitle->setContentsMargins(margin, 0, margin, 0);
     d->modulesDescription->setContentsMargins(margin, DesignSystem::layout().px24(), margin,
                                               DesignSystem::layout().px12());
+    d->styleChooseTitle->setContentsMargins(margin / 2.0, DesignSystem::layout().px24(), margin / 2.0,
+                                        DesignSystem::layout().px4());
+    d->styleChooseSubtitle->setContentsMargins(margin, 0, margin, 0);
+    d->styleChooseDescription->setContentsMargins(margin, DesignSystem::layout().px24(), margin,
+                                              DesignSystem::layout().px12());
     d->backupsTitle->setContentsMargins(margin / 2.0, DesignSystem::layout().px24(), margin / 2.0,
                                         DesignSystem::layout().px4());
     d->backupsSubtitle->setContentsMargins(margin, 0, margin, 0);
@@ -884,6 +1011,7 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
     for (auto logo : {
              d->uiLogo,
              d->modulesLogo,
+             d->styleChooseLogo,
              d->backupsLogo,
              d->socialLogo,
          }) {
@@ -904,12 +1032,14 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
              d->signInConfirmationCode,
              d->accountName,
              d->accountDescription,
+             d->styleChooseComboBox
          }) {
         textField->setBackgroundColor(DesignSystem::color().onPrimary());
         textField->setTextColor(DesignSystem::color().onPrimary());
         textField->setCustomMargins({ margin, DesignSystem::layout().px24(), margin, 0 });
     }
     d->uiLanguage->setPopupBackgroundColor(DesignSystem::color().primary());
+    d->styleChooseComboBox->setPopupBackgroundColor(DesignSystem::color().primary());
 
     for (auto themePreview : {
              d->uiLightTheme,
@@ -926,6 +1056,7 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
              d->signInContinueButton,
              d->accountContinueButton,
              d->modulesContinueButton,
+             d->styleChooseContinueButton,
              d->backupsContinueButton,
              d->socialContinueButton,
          }) {
@@ -949,6 +1080,7 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
              d->modulesAudioplayToggle,
              d->modulesStageplayToggle,
              d->modulesNovelToggle,
+             d->styleChooseActivateToggle,
          }) {
         toggle->setBackgroundColor(DesignSystem::color().primary());
         toggle->setTextColor(DesignSystem::color().onPrimary());
@@ -976,6 +1108,7 @@ void OnboardingNavigator::designSystemChangeEvent(DesignSystemChangeEvent* _even
     d->accountSubscription->setContentsMargins(
         margin - Ui::DesignSystem::radioButton().margins().left(), 0,
         margin - Ui::DesignSystem::radioButton().margins().right(), 0);
+
 }
 
 } // namespace Ui
