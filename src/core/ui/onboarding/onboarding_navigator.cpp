@@ -41,9 +41,9 @@ void addToggleWithTitle(QVBoxLayout* pageLayout, Toggle* _toggle, AbstractLabel*
     pageLayout->addLayout(layout);
 };
 
-const std::unordered_map<QString, QString>& getCompetitirColorSchemes(Ui::ApplicationTheme _theme) {
-    static std::unordered_map<QString, QString> lightSchemes;
-    static std::unordered_map<QString, QString> darkSchemes;
+const QHash<QString, QString>& getCompetitorColorSchemes(Ui::ApplicationTheme _theme) {
+    static QHash<QString, QString> lightSchemes;
+    static QHash<QString, QString> darkSchemes;
 
     if (lightSchemes.empty()) {
         for(auto & elem:
@@ -474,8 +474,9 @@ void OnboardingNavigator::Implementation::initStyleChoosePage()
     styleChooseSubtitle->setAlignment(Qt::AlignCenter);
     styleChooseContinueButton->setContained(true);
 
-    for (const auto& app: getCompetitirColorSchemes(q->getSelectedTheme())) {
-        styleChooseModel->appendRow(new QStandardItem(app.first));
+    const auto& map = getCompetitorColorSchemes(q->getSelectedTheme());
+    for (auto it = map.constBegin(); it != map.constEnd(); it++) {
+        styleChooseModel->appendRow(new QStandardItem(it.key()));
     }
     styleChooseComboBox->setModel(styleChooseModel);
 
@@ -596,10 +597,8 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
              d->uiDarkAndLightTheme,
              d->uiDarkTheme,
          }) {
-        connect(themePreview, &ThemePreview::themePressed, this,
-                &OnboardingNavigator::themeChanged);
-
         connect(themePreview, &ThemePreview::themePressed, this, [this](Ui::ApplicationTheme _theme) {
+            emit OnboardingNavigator::themeChanged(_theme);
             selectedTheme = _theme;
         });
     }
@@ -737,7 +736,7 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
     connect(d->styleChooseContinueButton, &Button::clicked, this,
             [this] {setCurrentWidget(d->modulesPage); });
     connect(d->styleChooseComboBox, &ComboBox::currentIndexChanged, this, [this](const QModelIndex& _index) {
-        const auto &color = getCompetitirColorSchemes(getSelectedTheme()).at(_index.data().toString());
+        const auto &color = getCompetitorColorSchemes(getSelectedTheme()).value(_index.data().toString());
         emit competitorColorSchemeSelected(color);
     });
 

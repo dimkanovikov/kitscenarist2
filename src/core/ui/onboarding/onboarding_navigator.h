@@ -11,7 +11,6 @@ struct AccountInfo;
 
 namespace Ui {
 enum class ApplicationTheme;
-enum class ApplicationToImportSettings;
 
 /**
  * @brief Навигатор по посадочным страницам

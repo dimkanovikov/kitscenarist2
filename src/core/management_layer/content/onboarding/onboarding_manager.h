@@ -67,7 +67,7 @@ signals:
     /**
      * @brief Пользователь выбрал тему приложения как у конкурента
      */
-    void themeChangedCustom(QString _color);
+    void useCustomThemeRequested(QString _color);
 
     /**
      * @brief Пользователь изменил масштаб интерфейса
