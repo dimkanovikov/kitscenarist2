@@ -18,7 +18,6 @@
 #include <utils/tools/debouncer.h>
 #include <utils/validators/email_validator.h>
 
-#include <map>
 #include <QBoxLayout>
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -42,28 +41,24 @@ void addToggleWithTitle(QVBoxLayout* pageLayout, Toggle* _toggle, AbstractLabel*
 };
 
 const QHash<QString, QString>& getCompetitorColorSchemes(Ui::ApplicationTheme _theme) {
-    static QHash<QString, QString> lightSchemes;
-    static QHash<QString, QString> darkSchemes;
-
-    if (lightSchemes.empty()) {
-        for(auto & elem:
-             settingsValue(DataStorageLayer::kApplicationCompetitorThemesLigthKey).toString().split(';')) {
-            const auto key_val = elem.split(':');
-            if (key_val.length() == 2) {
-                lightSchemes[key_val[0]] = key_val[1];
-            }
-        }
-    }
-
-    if (darkSchemes.empty()) {
-        for(auto & elem:
-             settingsValue(DataStorageLayer::kApplicationCompetitorThemesDarkKey).toString().split(';')) {
-            const auto key_val = elem.split(':');
-            if (key_val.length() == 2) {
-                darkSchemes[key_val[0]] = key_val[1];
-            }
-        }
-    }
+    static const  QHash<QString, QString> lightSchemes = {
+        {"KIT Scenarist", "ffffff38393a4285f4f8f8f2e4e4e438393af6f6f6000000ec3740f8f8f2000000f8f8f2fefefe000000"},
+        {"Final Draft", "f4eef02626264285f4f8f8f2f6eff3494748ececec000000ec3740f8f8f2000000f8f8f2fefefe000000"},
+        {"Arc Studio Pro", "ffffff3333334c26b5f8f8f2ffffff333333f9fafc000000ec3740f8f8f2000000f8f8f2ffffff333333"},
+        {"Fade In", "f0f0f00000004196e5f8f8f2e3e3e3141414efefef141414ec3740f8f8f2000000f8f8f2ffffff000000"},
+        {"Writer Duet", "3a4b59ffffff049effffffff3a4b59ffffff8aa5beffffffec3740f8f8f2000000f8f8f2ffffff000000"},
+        {"Highland2", "3f4752c4cace37aacfffffffffffff2d333bffffff2d333bec3740f8f8f2000000f8f8f2ffffff2d333b"},
+        {"Trelby", "ebe7e537383fda924bfffffff6f6f7000000ededed37383fec3740f8f8f2000000f8f8f2ffffff000000"},
+    };
+    static const QHash<QString, QString> darkSchemes = {
+        {"KIT Scenarist", "404040ebebeb4285f4f8f8f2414244ebebeb26282affffffec3740f8f8f2000000f8f8f23d3d3df8f8f2"},
+        {"Final Draft", "312529ebebeb4285f4f8f8f23f383ce3e3e3222222f8f8f2ec3740f8f8f2000000f8f8f2444444ffffff"},
+        {"Arc Studio Pro", "1d1f21d9dbde7971fcf8f8f21d1f21ebebeb101113f8f8f2ec3740f8f8f2000000f8f8f2161719ffffff"},
+        {"Fade In", "202020f6f6f54196e5f8f8f2414141fefefe202020f8f8f2ec3740f8f8f2000000f8f8f2373737f3f3f3"},
+        {"Writer Duet", "3a4b59ffffff049effffffff3a4b59ffffff17232edde5ebec3740f8f8f2000000f8f8f22d3b48ffffff"},
+        {"Highland2", "111111888888b26894ffffff000000aaaaaa000000aaaaaaec3740f8f8f2000000f8f8f2000000aaaaaa"},
+        {"Trelby", "f2f2f21f1f1fda924bfffffff2f2f21f1f1f1f3142b5c1cdec3740f8f8f2000000f8f8f2182430d3dce9"},
+    };
 
     if (_theme == Ui::ApplicationTheme::Light) {
         return lightSchemes;
@@ -98,6 +93,7 @@ public:
 
 
     OnboardingNavigator* q = nullptr;
+    Ui::ApplicationTheme selectedTheme = Ui::ApplicationTheme::Light;
 
     Widget* uiPage = nullptr;
     ImageLabel* uiLogo = nullptr;
@@ -474,7 +470,7 @@ void OnboardingNavigator::Implementation::initStyleChoosePage()
     styleChooseSubtitle->setAlignment(Qt::AlignCenter);
     styleChooseContinueButton->setContained(true);
 
-    const auto& map = getCompetitorColorSchemes(q->getSelectedTheme());
+    const auto& map = getCompetitorColorSchemes(selectedTheme);
     for (auto it = map.constBegin(); it != map.constEnd(); it++) {
         styleChooseModel->appendRow(new QStandardItem(it.key()));
     }
@@ -491,6 +487,7 @@ void OnboardingNavigator::Implementation::initStyleChoosePage()
     pageLayout->addWidget(styleChooseComboBox);
     pageLayout->addStretch();
     pageLayout->addWidget(styleChooseContinueButton);
+    styleChooseActivateToggle->setChecked(false);
     styleChoosePage->setLayout(pageLayout);
 }
 
@@ -569,7 +566,6 @@ void OnboardingNavigator::Implementation::updateAccountAvatar()
 OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
     : StackWidget(_parent)
     , d(new Implementation(this))
-    , selectedTheme(Ui::ApplicationTheme::Light)
 {
     setAnimationType(AnimationType::Slide);
 
@@ -598,8 +594,8 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
              d->uiDarkTheme,
          }) {
         connect(themePreview, &ThemePreview::themePressed, this, [this](Ui::ApplicationTheme _theme) {
-            emit OnboardingNavigator::themeChanged(_theme);
-            selectedTheme = _theme;
+            emit themeChanged(_theme);
+            d->selectedTheme = _theme;
         });
     }
     connect(d->uiScaleSlider, &Slider::valueChanged, this, [this](int _value) {
@@ -732,11 +728,19 @@ OnboardingNavigator::OnboardingNavigator(QWidget* _parent)
     //
     connect(d->styleChooseActivateToggle, &Toggle::checkedChanged, this, [this](bool _checked) {
         d->styleChooseComboBox->setReadOnly(!_checked);
+
+        if (_checked){
+            const auto &color = getCompetitorColorSchemes(d->selectedTheme).value(
+                d->styleChooseComboBox->currentIndex().data().toString());
+            emit competitorColorSchemeSelected(color);
+        } else {
+            emit themeChanged(d->selectedTheme);
+        }
     });
     connect(d->styleChooseContinueButton, &Button::clicked, this,
             [this] {setCurrentWidget(d->modulesPage); });
     connect(d->styleChooseComboBox, &ComboBox::currentIndexChanged, this, [this](const QModelIndex& _index) {
-        const auto &color = getCompetitorColorSchemes(getSelectedTheme()).value(_index.data().toString());
+        const auto &color = getCompetitorColorSchemes(d->selectedTheme).value(_index.data().toString());
         emit competitorColorSchemeSelected(color);
     });
 
@@ -813,11 +817,6 @@ void OnboardingNavigator::setAccountInfo(const Domain::AccountInfo& _accountInfo
             QTimer::singleShot(animationDuration(), this, [this] { d->accountName->setFocus(); });
         });
     }
-}
-
-ApplicationTheme OnboardingNavigator::getSelectedTheme() const
-{
-    return selectedTheme;
 }
 
 void OnboardingNavigator::updateTranslations()

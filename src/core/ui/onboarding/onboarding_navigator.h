@@ -48,12 +48,6 @@ public:
      */
     void setAccountInfo(const Domain::AccountInfo& _accountInfo);
 
-    /**
-     * @brief Тема выбранная пользователем на первом шаге
-     * @return Светлая/тёмная/смешанная тема
-     */
-    Ui::ApplicationTheme getSelectedTheme() const;
-
 signals:
     /**
      * @brief Пользователь выбрал язык приложения
@@ -111,8 +105,6 @@ protected:
 private:
     class Implementation;
     QScopedPointer<Implementation> d;
-
-    Ui::ApplicationTheme selectedTheme;
 };
 
 } // namespace Ui
