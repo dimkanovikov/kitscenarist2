@@ -2523,7 +2523,7 @@ void ApplicationManager::initConnections()
             [this](QLocale::Language _language) { d->setTranslation(_language); });
     connect(d->onboardingManager.data(), &OnboardingManager::themeChanged, this,
             [this](Ui::ApplicationTheme _theme) { d->setDesignSystemTheme(_theme); });
-    connect(d->onboardingManager.data(), &OnboardingManager::useCustomThemeRequested, this,
+    connect(d->onboardingManager.data(), &OnboardingManager::themeChangedCustom, this,
             [this](QString _color) {
                 d->setDesignSystemTheme(Ui::ApplicationTheme::Custom);
                 d->setDesignSystemCustomThemeColors(Ui::DesignSystem::Color(_color));
