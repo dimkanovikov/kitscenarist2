@@ -27,10 +27,8 @@ protected:
     static BusinessLayer::TextParagraphType jumpForTab(BusinessLayer::TextParagraphType _blockType);
     static BusinessLayer::TextParagraphType jumpForEnter(
         BusinessLayer::TextParagraphType _blockType);
-    static BusinessLayer::TextParagraphType changeForTab(
-        BusinessLayer::TextParagraphType _blockType);
-    static BusinessLayer::TextParagraphType changeForEnter(
-        BusinessLayer::TextParagraphType _blockType);
+    BusinessLayer::TextParagraphType changeForTab(BusinessLayer::TextParagraphType _blockType);
+    BusinessLayer::TextParagraphType changeForEnter(BusinessLayer::TextParagraphType _blockType);
     /** @} */
 
     /**

@@ -7,6 +7,7 @@
 #include "inline_note_handler.h"
 #include "page_handler.h"
 #include "panel_handler.h"
+#include "parenthetical_handler.h"
 #include "pre_handler.h"
 #include "prepare_handler.h"
 #include "sequence_footer_handler.h"
@@ -38,6 +39,7 @@ public:
     QScopedPointer<PanelHandler> panelHandler;
     QScopedPointer<DescriptionHandler> actionHandler;
     QScopedPointer<CharacterHandler> characterHandler;
+    QScopedPointer<ParentheticalHandler> parentheticalHandler;
     QScopedPointer<DialogHandler> dialogHandler;
     QScopedPointer<InlineNoteHandler> inlineNoteHandler;
     QScopedPointer<SequenceHeadingHandler> sequenceHeadingHandler;
@@ -54,6 +56,7 @@ KeyPressHandlerFacade::Implementation::Implementation(Ui::ComicBookTextEdit* _ed
     , panelHandler(new PanelHandler(_editor))
     , actionHandler(new DescriptionHandler(_editor))
     , characterHandler(new CharacterHandler(_editor))
+    , parentheticalHandler(new ParentheticalHandler(_editor))
     , dialogHandler(new DialogHandler(_editor))
     , inlineNoteHandler(new InlineNoteHandler(_editor))
     , sequenceHeadingHandler(new SequenceHeadingHandler(_editor))
@@ -152,6 +155,10 @@ AbstractKeyHandler* KeyPressHandlerFacade::handlerFor(TextParagraphType _type)
 
     case TextParagraphType::Character: {
         return d->characterHandler.data();
+    }
+
+    case TextParagraphType::Parenthetical: {
+        return d->parentheticalHandler.data();
     }
 
     case TextParagraphType::Dialogue: {

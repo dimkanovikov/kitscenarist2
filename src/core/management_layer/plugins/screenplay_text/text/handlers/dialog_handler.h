@@ -18,9 +18,9 @@ protected:
      * @brief Реализация интерфейса AbstractKeyHandler
      */
     /** @{ */
-    void handleEnter(QKeyEvent* _event = 0);
-    void handleTab(QKeyEvent* _event = 0);
-    void handleOther(QKeyEvent* _event);
+    void handleEnter(QKeyEvent* _event = nullptr) override;
+    void handleTab(QKeyEvent* _event = nullptr) override;
+    void handleOther(QKeyEvent* _event = nullptr) override;
     /** @} */
 };
 

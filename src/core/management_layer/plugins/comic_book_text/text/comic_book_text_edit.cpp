@@ -426,9 +426,11 @@ void ComicBookTextEdit::addParagraph(BusinessLayer::TextParagraphType _type)
             d->document.setParagraphType(BusinessLayer::TextParagraphType::Dialogue, cursor);
         }
         //
-        // Если вставляется реплика, то разделяем страницу и ставим курсор во вторую колонку
+        // Если вставляется ремарка, или реплика, то разделяем страницу и ставим курсор во вторую
+        // колонку
         //
-        else if (_type == BusinessLayer::TextParagraphType::Dialogue) {
+        else if (_type == BusinessLayer::TextParagraphType::Parenthetical
+                 || _type == BusinessLayer::TextParagraphType::Dialogue) {
             const auto cursorPosition = textCursor().position();
             d->document.splitParagraph(textCursor());
             auto cursor = textCursor();
@@ -504,7 +506,8 @@ void ComicBookTextEdit::setCurrentParagraphType(TextParagraphType _type)
     // На реплику
     //
     else if (d->comicBookTemplate().placeDialoguesInTable()
-             && _type == TextParagraphType::Dialogue) {
+             && (_type == TextParagraphType::Parenthetical
+                 || _type == TextParagraphType::Dialogue)) {
         //
         // Если текущий блок не в таблице, то создаём её и текущий блок помещаем в неё как персонажа
         //

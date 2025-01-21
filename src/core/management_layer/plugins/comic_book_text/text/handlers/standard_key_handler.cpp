@@ -63,12 +63,20 @@ TextParagraphType StandardKeyHandler::jumpForEnter(TextParagraphType _blockType)
 
 TextParagraphType StandardKeyHandler::changeForTab(TextParagraphType _blockType)
 {
-    return actionFor(kTab, kChange, _blockType);
+    auto nextBlockType = actionFor(kTab, kChange, _blockType);
+    if (!editor()->comicBookTemplate().paragraphStyle(nextBlockType).isActive()) {
+        nextBlockType = actionFor(kTab, kChange, nextBlockType);
+    }
+    return nextBlockType;
 }
 
 TextParagraphType StandardKeyHandler::changeForEnter(TextParagraphType _blockType)
 {
-    return actionFor(kEnter, kChange, _blockType);
+    auto nextBlockType = actionFor(kEnter, kChange, _blockType);
+    if (!editor()->comicBookTemplate().paragraphStyle(nextBlockType).isActive()) {
+        nextBlockType = actionFor(kEnter, kChange, nextBlockType);
+    }
+    return nextBlockType;
 }
 
 void StandardKeyHandler::handleDelete(QKeyEvent* _event)
