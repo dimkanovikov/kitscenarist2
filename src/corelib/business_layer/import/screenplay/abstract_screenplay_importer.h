@@ -35,7 +35,7 @@ public:
      * @brief Импорт сценариев из заданного документа
      */
     virtual QVector<Screenplay> importScreenplays(
-        const ScreenplayImportOptions& _options) const = 0;
+        const ScreenplayImportOptions* _options) const = 0;
 };
 
 } // namespace BusinessLayer

@@ -41,7 +41,7 @@ public:
     /**
      * @brief Импортировать аудиопьесу
      */
-    Audioplay importAudioplay(const ImportOptions& _options) const override;
+    Audioplay importAudioplay(const ImportOptions* _options) const override;
 
     /**
      * @brief Получить основной текст аудиопьесы в формате xml из заданного текста

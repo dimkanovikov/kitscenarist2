@@ -18,14 +18,19 @@ class ImportDialog : public AbstractDialog
     Q_OBJECT
 
 public:
-    explicit ImportDialog(const QString& _importFilePath, QWidget* _parent = nullptr);
+    enum DataRole {
+        ImportTypeRole = Qt::UserRole + 1,
+        ImportEnabledRole,
+    };
+
+public:
+    explicit ImportDialog(const QStringList& _importFilePaths, QWidget* _parent = nullptr);
     ~ImportDialog() override;
 
     /**
      * @brief Получить заданные опции импортирования
      */
-    BusinessLayer::ImportOptions importOptions() const;
-    BusinessLayer::ScreenplayImportOptions screenplayImportOptions() const;
+    std::vector<std::unique_ptr<BusinessLayer::ImportOptions>> importOptions() const;
 
 signals:
     /**

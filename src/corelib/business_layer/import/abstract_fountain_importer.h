@@ -23,7 +23,7 @@ public:
     /**
      * @brief Импорт докуметов (всех, кроме сценариев)
      */
-    Documents importDocuments(const ImportOptions& _options) const override;
+    Documents importDocuments(const ImportOptions* _options) const override;
 
 protected:
     /**

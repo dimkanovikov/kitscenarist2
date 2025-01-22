@@ -42,16 +42,16 @@ AudioplayFountainImporter::AudioplayFountainImporter()
 AudioplayFountainImporter::~AudioplayFountainImporter() = default;
 
 AbstractAudioplayImporter::Audioplay AudioplayFountainImporter::importAudioplay(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
     //
     // Открываем файл
     //
-    QFile fountainFile(_options.filePath);
+    QFile fountainFile(_options->filePath);
     if (!fountainFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -61,7 +61,7 @@ AbstractAudioplayImporter::Audioplay AudioplayFountainImporter::importAudioplay(
     //
     auto audioplay = audioplayText(fountainFile.readAll());
     if (audioplay.name.isEmpty()) {
-        audioplay.name = QFileInfo(_options.filePath).completeBaseName();
+        audioplay.name = QFileInfo(_options->filePath).completeBaseName();
     }
 
     return audioplay;

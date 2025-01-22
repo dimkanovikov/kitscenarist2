@@ -68,12 +68,12 @@ NovelMarkdownImporter::NovelMarkdownImporter()
 NovelMarkdownImporter::~NovelMarkdownImporter() = default;
 
 AbstractNovelImporter::Document NovelMarkdownImporter::importNovel(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
     //
     // Открываем файл
     //
-    QFile textFile(_options.filePath);
+    QFile textFile(_options->filePath);
     if (!textFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -83,7 +83,7 @@ AbstractNovelImporter::Document NovelMarkdownImporter::importNovel(
     //
     Document textDocument = novelText(textFile.readAll());
     if (textDocument.name.isEmpty()) {
-        textDocument.name = QFileInfo(_options.filePath).completeBaseName();
+        textDocument.name = QFileInfo(_options->filePath).completeBaseName();
     }
 
     return textDocument;

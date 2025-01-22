@@ -43,16 +43,16 @@ ScreenplayFountainImporter::ScreenplayFountainImporter()
 ScreenplayFountainImporter::~ScreenplayFountainImporter() = default;
 
 QVector<AbstractScreenplayImporter::Screenplay> ScreenplayFountainImporter::importScreenplays(
-    const ScreenplayImportOptions& _options) const
+    const ScreenplayImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
     //
     // Открываем файл
     //
-    QFile fountainFile(_options.filePath);
+    QFile fountainFile(_options->filePath);
     if (!fountainFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -60,9 +60,9 @@ QVector<AbstractScreenplayImporter::Screenplay> ScreenplayFountainImporter::impo
     //
     // Импортируем
     //
-    auto screenplay = screenplayText(fountainFile.readAll(), _options.keepSceneNumbers);
+    auto screenplay = screenplayText(fountainFile.readAll(), _options->keepSceneNumbers);
     if (screenplay.name.isEmpty()) {
-        screenplay.name = QFileInfo(_options.filePath).completeBaseName();
+        screenplay.name = QFileInfo(_options->filePath).completeBaseName();
     }
 
     return { screenplay };

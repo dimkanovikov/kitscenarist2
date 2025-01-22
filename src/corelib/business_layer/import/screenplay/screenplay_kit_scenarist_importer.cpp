@@ -533,14 +533,14 @@ ScreenplayKitScenaristImporter::ScreenplayKitScenaristImporter()
 ScreenplayKitScenaristImporter::~ScreenplayKitScenaristImporter() = default;
 
 AbstractScreenplayImporter::Documents ScreenplayKitScenaristImporter::importDocuments(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
-    const auto& options = static_cast<const ScreenplayImportOptions&>(_options);
+    const auto& options = static_cast<const ScreenplayImportOptions*>(_options);
     Documents result;
 
     {
         QSqlDatabase database = QSqlDatabase::addDatabase(kSqlDriver, kConnectionName);
-        database.setDatabaseName(options.filePath);
+        database.setDatabaseName(options->filePath);
         if (database.open()) {
             auto typeFor = [](const QSqlQuery& _record) {
                 switch (_record.value("type").toUInt()) {
@@ -574,7 +574,7 @@ AbstractScreenplayImporter::Documents ScreenplayKitScenaristImporter::importDocu
             //
             // Загрузим данные о персонажах
             //
-            if (options.importCharacters) {
+            if (options->importCharacters) {
                 QSqlQuery charactersQuery(database);
                 charactersQuery.prepare(
                     "SELECT name, description FROM research WHERE type = ? ORDER by sort_order");
@@ -591,7 +591,7 @@ AbstractScreenplayImporter::Documents ScreenplayKitScenaristImporter::importDocu
             //
             // Загрузим данные о локациях
             //
-            if (options.importLocations) {
+            if (options->importLocations) {
                 QSqlQuery locationsQuery(database);
                 locationsQuery.prepare("SELECT * FROM research WHERE type = ? ORDER by sort_order");
                 locationsQuery.addBindValue(Location);
@@ -607,7 +607,7 @@ AbstractScreenplayImporter::Documents ScreenplayKitScenaristImporter::importDocu
             //
             // Загрузим данные разработки
             //
-            if (options.importResearch) {
+            if (options->importResearch) {
                 QSqlQuery documentsQuery(database);
                 documentsQuery.prepare("SELECT * FROM research WHERE type IN (?, ?) ORDER BY "
                                        "parent_id, sort_order");
@@ -662,9 +662,9 @@ AbstractScreenplayImporter::Documents ScreenplayKitScenaristImporter::importDocu
 }
 
 QVector<AbstractScreenplayImporter::Screenplay> ScreenplayKitScenaristImporter::importScreenplays(
-    const ScreenplayImportOptions& _options) const
+    const ScreenplayImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
@@ -672,14 +672,14 @@ QVector<AbstractScreenplayImporter::Screenplay> ScreenplayKitScenaristImporter::
 
     {
         QSqlDatabase database = QSqlDatabase::addDatabase(kSqlDriver, kConnectionName);
-        database.setDatabaseName(_options.filePath);
+        database.setDatabaseName(_options->filePath);
         if (database.open()) {
             QSqlQuery query(database);
 
             //
             // Читаем сценарий (scenario - текст сценария)
             //
-            QString screenplayName = QFileInfo(_options.filePath).completeBaseName();
+            QString screenplayName = QFileInfo(_options->filePath).completeBaseName();
             {
                 query.exec("SELECT text FROM scenario WHERE is_draft = 0");
                 query.next();

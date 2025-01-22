@@ -60,16 +60,16 @@ ComicBookFountainImporter::ComicBookFountainImporter()
 ComicBookFountainImporter::~ComicBookFountainImporter() = default;
 
 AbstractComicBookImporter::ComicBook ComicBookFountainImporter::importComicBook(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
     //
     // Открываем файл
     //
-    QFile fountainFile(_options.filePath);
+    QFile fountainFile(_options->filePath);
     if (!fountainFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -79,7 +79,7 @@ AbstractComicBookImporter::ComicBook ComicBookFountainImporter::importComicBook(
     //
     auto comicbook = comicbookText(fountainFile.readAll());
     if (comicbook.name.isEmpty()) {
-        comicbook.name = QFileInfo(_options.filePath).completeBaseName();
+        comicbook.name = QFileInfo(_options->filePath).completeBaseName();
     }
 
     return comicbook;

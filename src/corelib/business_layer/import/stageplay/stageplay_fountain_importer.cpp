@@ -41,16 +41,16 @@ StageplayFountainImporter::StageplayFountainImporter()
 StageplayFountainImporter::~StageplayFountainImporter() = default;
 
 AbstractStageplayImporter::Stageplay StageplayFountainImporter::importStageplay(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
     //
     // Открываем файл
     //
-    QFile fountainFile(_options.filePath);
+    QFile fountainFile(_options->filePath);
     if (!fountainFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -60,7 +60,7 @@ AbstractStageplayImporter::Stageplay StageplayFountainImporter::importStageplay(
     //
     auto stageplay = stageplayText(fountainFile.readAll());
     if (stageplay.name.isEmpty()) {
-        stageplay.name = QFileInfo(_options.filePath).completeBaseName();
+        stageplay.name = QFileInfo(_options->filePath).completeBaseName();
     }
 
     return stageplay;

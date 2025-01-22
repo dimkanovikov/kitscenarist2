@@ -28,7 +28,7 @@ public:
     /**
      * @brief Импорт пьесы из заданного документа
      */
-    virtual Stageplay importStageplay(const ImportOptions& _options) const = 0;
+    virtual Stageplay importStageplay(const ImportOptions* _options) const = 0;
 };
 
 } // namespace BusinessLayer

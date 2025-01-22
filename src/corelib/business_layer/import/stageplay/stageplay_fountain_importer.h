@@ -41,7 +41,7 @@ public:
     /**
      * @brief Импортировать пьесу
      */
-    Stageplay importStageplay(const ImportOptions& _options) const override;
+    Stageplay importStageplay(const ImportOptions* _options) const override;
 
     /**
      * @brief Получить основной текст пьесы в формате xml из заданного текста

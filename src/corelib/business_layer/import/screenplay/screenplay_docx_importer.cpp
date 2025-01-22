@@ -31,19 +31,19 @@ ScreenplayDocxImporter::~ScreenplayDocxImporter() = default;
 
 
 QVector<AbstractScreenplayImporter::Screenplay> ScreenplayDocxImporter::importScreenplays(
-    const ScreenplayImportOptions& _options) const
+    const ScreenplayImportOptions* _options) const
 {
     Screenplay screenplay;
-    screenplay.name = QFileInfo(_options.filePath).completeBaseName();
+    screenplay.name = QFileInfo(_options->filePath).completeBaseName();
 
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return { screenplay };
     }
 
     //
     // Преобразуем заданный документ в QTextDocument и парсим его
     //
-    if (QTextDocument document; documentForImport(_options.filePath, document)) {
+    if (QTextDocument document; documentForImport(_options->filePath, document)) {
         screenplay.text = parseDocument(_options, document);
     }
 
@@ -114,10 +114,10 @@ void ScreenplayDocxImporter::writeReviewMarks(QXmlStreamWriter& _writer, QTextCu
     }
 }
 
-bool ScreenplayDocxImporter::shouldKeepSceneNumbers(const ImportOptions& _options) const
+bool ScreenplayDocxImporter::shouldKeepSceneNumbers(const ImportOptions* _options) const
 {
-    const auto& options = static_cast<const ScreenplayImportOptions&>(_options);
-    return options.keepSceneNumbers;
+    const auto options = static_cast<const ScreenplayImportOptions*>(_options);
+    return options->keepSceneNumbers;
 }
 
 QString ScreenplayDocxImporter::characterName(const QString& _text) const

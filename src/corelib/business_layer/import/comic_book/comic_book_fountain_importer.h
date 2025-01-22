@@ -22,7 +22,7 @@ public:
     /**
      * @brief Импортировать комикс
      */
-    ComicBook importComicBook(const ImportOptions& _options) const override;
+    ComicBook importComicBook(const ImportOptions* _options) const override;
 
     /**
      * @brief Получить основной текст комикса в формате xml из заданного текста

@@ -547,7 +547,7 @@ void MenuView::updateTranslations()
     d->saveProject->setWhatsThis(
         QKeySequence(QKeySequence::Save).toString(QKeySequence::NativeText));
     d->saveProjectAs->setText(tr("Save story as..."));
-    d->importProject->setText(tr("Import document..."));
+    d->importProject->setText(tr("Import documents..."));
     d->exportCurrentDocument->setText(tr("Export current document..."));
     d->fullScreen->setText(tr("Full screen"));
     d->fullScreen->setWhatsThis(

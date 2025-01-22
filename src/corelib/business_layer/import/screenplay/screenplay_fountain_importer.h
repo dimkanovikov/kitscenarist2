@@ -41,7 +41,7 @@ public:
     /**
      * @brief Импортировать сценарии
      */
-    QVector<Screenplay> importScreenplays(const ScreenplayImportOptions& _options) const override;
+    QVector<Screenplay> importScreenplays(const ScreenplayImportOptions* _options) const override;
 
     /**
      * @brief Получить основной текст сценария в формате xml из заданного текста

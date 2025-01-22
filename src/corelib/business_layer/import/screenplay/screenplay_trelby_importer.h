@@ -16,12 +16,12 @@ public:
     /**
      * @brief Импорт докуметов (всех, кроме сценариев)
      */
-    Documents importDocuments(const ImportOptions& _options) const override;
+    Documents importDocuments(const ImportOptions* _options) const override;
 
     /**
      * @brief Сформировать xml-сценария во внутреннем формате
      */
-    QVector<Screenplay> importScreenplays(const ScreenplayImportOptions& _options) const override;
+    QVector<Screenplay> importScreenplays(const ScreenplayImportOptions* _options) const override;
 };
 
 } // namespace BusinessLayer

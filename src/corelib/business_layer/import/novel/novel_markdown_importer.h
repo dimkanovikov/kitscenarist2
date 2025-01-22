@@ -20,7 +20,7 @@ public:
     /**
      * @brief Импортировать роман
      */
-    Document importNovel(const ImportOptions& _options) const override;
+    Document importNovel(const ImportOptions* _options) const override;
 
     /**
      * @brief Получить основной текст романа в формате xml из заданного текста

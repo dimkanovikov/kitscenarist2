@@ -55,12 +55,12 @@ QString readScript(const QString& _filePath)
 } // namespace
 
 AbstractScreenplayImporter::Documents ScreenplayCeltxImporter::importDocuments(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
     //
     // Открываем файл
     //
-    const auto scriptHtml = readScript(_options.filePath);
+    const auto scriptHtml = readScript(_options->filePath);
     if (scriptHtml.isEmpty()) {
         return {};
     }
@@ -89,7 +89,7 @@ AbstractScreenplayImporter::Documents ScreenplayCeltxImporter::importDocuments(
 
         switch (blockType) {
         case TextParagraphType::SceneHeading: {
-            if (!_options.importLocations) {
+            if (!_options->importLocations) {
                 break;
             }
 
@@ -103,7 +103,7 @@ AbstractScreenplayImporter::Documents ScreenplayCeltxImporter::importDocuments(
         }
 
         case TextParagraphType::Character: {
-            if (!_options.importCharacters) {
+            if (!_options->importCharacters) {
                 break;
             }
 
@@ -133,19 +133,19 @@ AbstractScreenplayImporter::Documents ScreenplayCeltxImporter::importDocuments(
 }
 
 QVector<AbstractScreenplayImporter::Screenplay> ScreenplayCeltxImporter::importScreenplays(
-    const ScreenplayImportOptions& _options) const
+    const ScreenplayImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
     Screenplay result;
-    result.name = QFileInfo(_options.filePath).completeBaseName();
+    result.name = QFileInfo(_options->filePath).completeBaseName();
 
     //
     // Открываем файл
     //
-    const auto scriptHtml = readScript(_options.filePath);
+    const auto scriptHtml = readScript(_options->filePath);
     if (scriptHtml.isEmpty()) {
         return { result };
     }

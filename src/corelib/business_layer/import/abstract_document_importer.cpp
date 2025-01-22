@@ -161,13 +161,13 @@ AbstractDocumentImporter::~AbstractDocumentImporter() = default;
 
 
 AbstractImporter::Documents AbstractDocumentImporter::importDocuments(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
     //
     // Преобразовать заданный документ в QTextDocument
     //
     QTextDocument document;
-    const bool documentDone = documentForImport(_options.filePath, document);
+    const bool documentDone = documentForImport(_options->filePath, document);
     if (!documentDone) {
         return {};
     }
@@ -240,7 +240,7 @@ AbstractImporter::Documents AbstractDocumentImporter::importDocuments(
 
             switch (blockType) {
             case TextParagraphType::SceneHeading: {
-                if (!_options.importLocations) {
+                if (!_options->importLocations) {
                     break;
                 }
 
@@ -254,7 +254,7 @@ AbstractImporter::Documents AbstractDocumentImporter::importDocuments(
             }
 
             case TextParagraphType::Character: {
-                if (!_options.importCharacters) {
+                if (!_options->importCharacters) {
                     break;
                 }
 
@@ -298,7 +298,7 @@ AbstractImporter::Documents AbstractDocumentImporter::importDocuments(
     return documents;
 }
 
-QString AbstractDocumentImporter::parseDocument(const ImportOptions& _options,
+QString AbstractDocumentImporter::parseDocument(const ImportOptions* _options,
                                                 QTextDocument& _document) const
 {
     //
@@ -672,7 +672,7 @@ QRegularExpression AbstractDocumentImporter::startFromNumberChecker() const
     return kStartFromNumberChecker;
 }
 
-bool AbstractDocumentImporter::shouldKeepSceneNumbers(const ImportOptions& _options) const
+bool AbstractDocumentImporter::shouldKeepSceneNumbers(const ImportOptions* _options) const
 {
     Q_UNUSED(_options)
 

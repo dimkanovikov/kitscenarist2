@@ -28,7 +28,7 @@ public:
     /**
      * @brief Импорт аудиопьесы из заданного документа
      */
-    virtual Audioplay importAudioplay(const ImportOptions& _options) const = 0;
+    virtual Audioplay importAudioplay(const ImportOptions* _options) const = 0;
 };
 
 } // namespace BusinessLayer

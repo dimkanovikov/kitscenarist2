@@ -511,12 +511,12 @@ AbstractFountainImporter::AbstractFountainImporter(
 AbstractFountainImporter::~AbstractFountainImporter() = default;
 
 AbstractScreenplayImporter::Documents AbstractFountainImporter::importDocuments(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
     //
     // Открываем файл
     //
-    QFile fountainFile(_options.filePath);
+    QFile fountainFile(_options->filePath);
     if (!fountainFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -674,7 +674,7 @@ AbstractScreenplayImporter::Documents AbstractFountainImporter::importDocuments(
 
         switch (blockType) {
         case TextParagraphType::SceneHeading: {
-            if (!_options.importLocations) {
+            if (!_options->importLocations) {
                 break;
             }
 
@@ -686,7 +686,7 @@ AbstractScreenplayImporter::Documents AbstractFountainImporter::importDocuments(
         }
 
         case TextParagraphType::Character: {
-            if (!_options.importCharacters) {
+            if (!_options->importCharacters) {
                 break;
             }
 

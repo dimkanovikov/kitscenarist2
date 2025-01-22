@@ -20,12 +20,12 @@
 namespace BusinessLayer {
 
 AbstractScreenplayImporter::Documents ScreenplayFdxImporter::importDocuments(
-    const ImportOptions& _options) const
+    const ImportOptions* _options) const
 {
     //
     // Открываем файл
     //
-    QFile fdxFile(_options.filePath);
+    QFile fdxFile(_options->filePath);
     if (!fdxFile.open(QIODevice::ReadOnly)) {
         return {};
     }
@@ -82,7 +82,7 @@ AbstractScreenplayImporter::Documents ScreenplayFdxImporter::importDocuments(
 
         switch (blockType) {
         case TextParagraphType::SceneHeading: {
-            if (!_options.importLocations) {
+            if (!_options->importLocations) {
                 break;
             }
 
@@ -96,7 +96,7 @@ AbstractScreenplayImporter::Documents ScreenplayFdxImporter::importDocuments(
         }
 
         case TextParagraphType::Character: {
-            if (!_options.importCharacters) {
+            if (!_options->importCharacters) {
                 break;
             }
 
@@ -131,19 +131,19 @@ AbstractScreenplayImporter::Documents ScreenplayFdxImporter::importDocuments(
 }
 
 QVector<AbstractScreenplayImporter::Screenplay> ScreenplayFdxImporter::importScreenplays(
-    const ScreenplayImportOptions& _options) const
+    const ScreenplayImportOptions* _options) const
 {
-    if (_options.importText == false) {
+    if (_options->importText == false) {
         return {};
     }
 
     Screenplay result;
-    result.name = QFileInfo(_options.filePath).completeBaseName();
+    result.name = QFileInfo(_options->filePath).completeBaseName();
 
     //
     // Открываем файл
     //
-    QFile fdxFile(_options.filePath);
+    QFile fdxFile(_options->filePath);
     if (!fdxFile.open(QIODevice::ReadOnly)) {
         return { result };
     }

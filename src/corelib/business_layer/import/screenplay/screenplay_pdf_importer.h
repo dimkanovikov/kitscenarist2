@@ -18,7 +18,7 @@ public:
     /**
      * @brief Импортировать сценарии
      */
-    QVector<Screenplay> importScreenplays(const ScreenplayImportOptions& _options) const override;
+    QVector<Screenplay> importScreenplays(const ScreenplayImportOptions* _options) const override;
 
 protected:
     /**
@@ -35,7 +35,7 @@ protected:
     /**
      * @brief Следует ли сохранять номера сцен
      */
-    bool shouldKeepSceneNumbers(const ImportOptions& _options) const override;
+    bool shouldKeepSceneNumbers(const ImportOptions* _options) const override;
 
     /**
      * @brief Получить имя персонажа

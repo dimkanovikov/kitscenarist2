@@ -30,7 +30,7 @@ public:
     /**
      * @brief Импорт сценариев из заданного документа
      */
-    virtual ComicBook importComicBook(const ImportOptions& _options) const = 0;
+    virtual ComicBook importComicBook(const ImportOptions* _options) const = 0;
 };
 
 } // namespace BusinessLayer

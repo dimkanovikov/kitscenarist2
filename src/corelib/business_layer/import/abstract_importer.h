@@ -40,7 +40,7 @@ public:
     /**
      * @brief Импорт докуметов (всех, кроме сценариев)
      */
-    virtual Documents importDocuments(const ImportOptions& _options) const = 0;
+    virtual Documents importDocuments(const ImportOptions* _options) const = 0;
 };
 
 } // namespace BusinessLayer

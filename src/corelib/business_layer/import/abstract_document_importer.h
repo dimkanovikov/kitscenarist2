@@ -26,12 +26,12 @@ public:
     /**
      * @brief Импорт докуметов (всех, кроме сценариев)
      */
-    Documents importDocuments(const ImportOptions& _options) const override;
+    Documents importDocuments(const ImportOptions* _options) const override;
 
     /**
      * @brief Получить из QTextDocument xml-строку
      */
-    QString parseDocument(const ImportOptions& _options, QTextDocument& _document) const;
+    QString parseDocument(const ImportOptions* _options, QTextDocument& _document) const;
 
 protected:
     /**
@@ -61,7 +61,7 @@ protected:
     /**
      * @brief Следует ли сохранять номера сцен
      */
-    virtual bool shouldKeepSceneNumbers(const ImportOptions& _options) const;
+    virtual bool shouldKeepSceneNumbers(const ImportOptions* _options) const;
 
     /**
      * @brief Записать редакторские заметки
