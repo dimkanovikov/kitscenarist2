@@ -33,6 +33,12 @@ public:
     void importScreenplay(const QString& _filePath, bool _importDocuments = true);
     void importNovel(const QString& _filePath);
 
+    /**
+     * @brief Импортировать данные файла в заданный документ
+     */
+    void importFileDataToDocument(const QString& _filePath, const QUuid& _documentUuid,
+                                  Domain::DocumentObjectType _type);
+
 signals:
     /**
      * @brief Персонаж загружен
@@ -59,6 +65,11 @@ signals:
                             const QString& _synopsis, const QString& _treatment,
                             const QString& _screenplay);
     void stageplayImported(const QString& _name, const QString& _titlePage, const QString& _text);
+
+    /**
+     * @brief Запрос на загрузку презентации
+     */
+    void importPresentationRequested(const QString& _filePath, const QUuid& _documentUuid);
 
 private:
     class Implementation;

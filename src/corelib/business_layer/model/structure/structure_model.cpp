@@ -452,6 +452,12 @@ QModelIndex StructureModel::addDocument(Domain::DocumentObjectType _type, const 
         break;
     }
 
+    case DocumentObjectType::Presentation: {
+        appendItem(createItem(_type, !_name.isEmpty() ? _name : tr("Presentation")), parentItem,
+                   _content);
+        break;
+    }
+
     default: {
         Q_ASSERT(false);
         break;
@@ -725,7 +731,8 @@ Qt::ItemFlags StructureModel::flags(const QModelIndex& _index) const
     case Domain::DocumentObjectType::Novel:
     case Domain::DocumentObjectType::SimpleText:
     case Domain::DocumentObjectType::MindMap:
-    case Domain::DocumentObjectType::ImagesGallery: {
+    case Domain::DocumentObjectType::ImagesGallery:
+    case Domain::DocumentObjectType::Presentation: {
         return defaultFlags | Qt::ItemIsDragEnabled;
     }
 

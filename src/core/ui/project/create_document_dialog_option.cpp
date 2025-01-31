@@ -235,6 +235,11 @@ void CreateDocumentDialogOption::updateTranslations()
         break;
     }
 
+    case DocumentObjectType::Presentation: {
+        d->documentName = tr("Presentation");
+        break;
+    }
+
     default: {
         Q_ASSERT(false);
         break;

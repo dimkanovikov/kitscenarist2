@@ -96,7 +96,8 @@ enum class DocumentObjectType {
     MindMap = 100003,
     Image = 100004,
     ImagesGallery = 100005,
-    Link = 100006,
+    Presentation = 100006,
+    Link = 100007,
 };
 
 /**

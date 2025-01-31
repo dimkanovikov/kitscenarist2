@@ -23,6 +23,7 @@
 #include <business_layer/model/novel/novel_synopsis_model.h>
 #include <business_layer/model/novel/novel_title_page_model.h>
 #include <business_layer/model/novel/text/novel_text_model.h>
+#include <business_layer/model/presentation/presentation_model.h>
 #include <business_layer/model/project/project_information_model.h>
 #include <business_layer/model/recycle_bin/recycle_bin_model.h>
 #include <business_layer/model/screenplay/screenplay_dictionaries_model.h>
@@ -1369,6 +1370,11 @@ BusinessLayer::AbstractModel* ProjectModelsFacade::modelFor(Domain::DocumentObje
 
             case Domain::DocumentObjectType::ImagesGallery: {
                 model = new BusinessLayer::ImagesGalleryModel;
+                break;
+            }
+
+            case Domain::DocumentObjectType::Presentation: {
+                model = new BusinessLayer::PresentationModel;
                 break;
             }
 

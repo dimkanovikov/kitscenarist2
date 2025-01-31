@@ -41,6 +41,11 @@ public:
     void setNameError(const QString& _error);
 
     /**
+     * @brief Задать ошибку файл презентации
+     */
+    void setImportFileError(const QString& _error);
+
+    /**
      * @brief Установить возможность вставки элемента в родителя
      */
     void setInsertionParent(const QString& _parentName);
@@ -55,11 +60,23 @@ public:
      */
     bool needInsertIntoParent() const;
 
+    /**
+     * @brief Путь к файлу для импорта
+     */
+    QString importFilePath() const;
+
 signals:
     /**
-     * @brief Пользователь хочет создать документ заданного типа с заданным именем
+     * @brief Пользователь хочет создать документ заданного типа с заданным именем (опционально: из
+     * заданного файла)
      */
-    void createPressed(Domain::DocumentObjectType _type, const QString& _name);
+    void createPressed(Domain::DocumentObjectType _type, const QString& _name,
+                       const QString& _filePath);
+
+    /**
+     * @brief Нужно импортировать файл
+     */
+    void importFileRequested(Domain::DocumentObjectType _type);
 
 protected:
     /**

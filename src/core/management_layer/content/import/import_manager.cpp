@@ -393,4 +393,18 @@ void ImportManager::importNovel(const QString& _filePath)
     d->importNovel(options);
 }
 
+void ImportManager::importFileDataToDocument(const QString& _filePath, const QUuid& _documentUuid,
+                                             Domain::DocumentObjectType _type)
+{
+    switch (_type) {
+    case Domain::DocumentObjectType::Presentation: {
+        emit importPresentationRequested(_filePath, _documentUuid);
+        break;
+    }
+    default: {
+        break;
+    }
+    }
+}
+
 } // namespace ManagementLayer

@@ -122,6 +122,11 @@ public:
     void addStageplay(const QString& _name, const QString& _titlePage, const QString& _text);
 
     /**
+     * @brief Импортировать презентацию
+     */
+    void importPresentation(const QString& _filePath, const QUuid& _documentUuid);
+
+    /**
      * @brief Версии модели документа для экспорта
      * @note Маппим модели для случаев, когда у пользователя выбрана титульная страница, чтобы
      *       экспортировался сам скрипт
@@ -327,6 +332,12 @@ signals:
                                const QString& _promptSuffix);
     void generateImageRequested(const QString& _promptPrefix, const QString& _prompt,
                                 const QString& _promptSuffix);
+
+    /**
+     * @brief Запрос на импорт файла
+     */
+    void importFileRequested(const QString& _filePath, const QUuid& _documentUuid,
+                             Domain::DocumentObjectType _type);
 
 protected:
     /**
