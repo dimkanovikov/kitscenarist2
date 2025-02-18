@@ -1,11 +1,11 @@
-name: Build Starc for Linux
+name: Build Starc for DEBIAN Linux
 
 env:
-  APP_VERSION: 0.7.6
+  APP_VERSION: 0.7.1
 
 on:
   push:
-    branches: [ test ]
+    branches: [ test2 ]
   pull_request:
     branches: [ master ]
   create:
@@ -22,15 +22,10 @@ jobs:
       - name: Checkout sources for push or create tag event
         uses: actions/checkout@master
 
-      - name: Checkout sources for pull request event
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/checkout@master
-
       - name: Checkout submodules for pull request event
-        if: ${{ github.event_name == 'pull_request' }}
         shell: bash
         run: |
-          git submodule update --init --recursive src/3rd_party/qbreakpad/ src/3rd_party/pdfhummus/ src/3rd_party/pdftextextraction/
+          git submodule update --init --recursive src/3rd_party/qbreakpad/
 
       - name: Add info about dev build to the env
         shell: bash
@@ -81,49 +76,18 @@ jobs:
           cd src
           make -j$(nproc)
 
-      - name: Make AppImage
+      - name: Make deb package
         shell: bash
         run: |
           cd build/linux
-          ./make-starc-x86_64-tar-image.sh ${{env.APP_VERSION}}
-
-      - name: Make .deb Package
-        shell: bash
-        run: |
-          cd build/linux
-          ./make-starc-x86_64-deb-package.sh ${{env.APP_VERSION}}
-
-      - name: Make .deb Package
-        shell: bash
-        run: |
-          cd build/linux
+          chmod +x make-starc-deb-package.sh
           ./make-starc-deb-package.sh ${{env.APP_VERSION}}
+
+      - name: List files in build directory
+        run: ls -la build/linux/
 
       - name: Collect artifacts
         uses: actions/upload-artifact@v4
         with:
           name: linux packages
-          path: |
-            build/linux/starc-setup.AppImage
-            build/linux/starc-setup.deb
-
-      - name: Publish artifacts to the dev stream and notify clients
-        if: startsWith(github.ref, 'refs/tags/') != true
-        shell: bash
-        run: |
-          curl -F "api_key=${{ secrets.STARC_API_KEY }}" -F "name_for_file=starc-setup.AppImage" -F "file_bin=@build/linux/starc-setup.AppImage" https://starc.app/api/app/updates/publish
-          curl -F "api_key=${{ secrets.STARC_API_KEY }}" -F "system=linux" -F "version=${{env.APP_VERSION}} dev ${{env.DEV_BUILD}}" https://starc.app/api/app/updates/notify
-
-      - name: Publish artifacts to the GitHub releases
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            build/linux/starc-setup.AppImage
-            build/linux/starc-setup.deb
-
-      - name: Notify clients that stable release published
-        if: startsWith(github.ref, 'refs/tags/')
-        shell: bash
-        run: |
-          curl -F "api_key=${{ secrets.STARC_API_KEY }}" -F "system=linux" -F "version=${{env.APP_VERSION}}" https://starc.app/api/app/updates/notify
+          path: build/linux/starc-setup.deb
