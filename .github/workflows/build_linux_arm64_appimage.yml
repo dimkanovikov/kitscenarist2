@@ -1,0 +1,100 @@
+name: Build Starc for ARM Linux
+
+env:
+  APP_VERSION: 0.7.1
+
+on:
+  push:
+    branches: [ test2 ]
+  pull_request:
+    branches: [ master ]
+  create:
+    tags:
+      - v*
+  workflow_dispatch: {}
+
+jobs:
+  build_linux:
+    name: Build ARM Linux version
+    runs-on: ubuntu-20.04
+    timeout-minutes: 60
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Checkout sources for push or create tag event
+        uses: actions/checkout@master
+
+      - name: Checkout submodules for pull request event
+        shell: bash
+        run: |
+          git submodule update --init --recursive src/3rd_party/qbreakpad/
+
+      - name: Add info about dev build to the env
+        shell: bash
+        run: |
+          echo "DEV_BUILD=$(git rev-list `git rev-list --tags --no-walk --max-count=1`..HEAD --count)" >> $GITHUB_ENV
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 5.15.2
+          target: desktop
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo apt update
+          sudo apt install libgstreamer-plugins-base1.0-0 cmake make pkg-config libx11-dev xcb libx11-xcb-dev libxkbcommon-x11-0 libxkbcommon-dev libgtk-3-dev sassc
+
+      - name: Install Adwaita-qt
+        run: |
+          git clone https://github.com/FedoraQt/adwaita-qt.git adwaita-qt
+          cd adwaita-qt
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT6=OFF
+          make -j2
+          sudo make install
+
+      - name: Install QGnomePlatform
+        run: |
+          git clone https://github.com/FedoraQt/QGnomePlatform qgnomeplatform
+          cd qgnomeplatform
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT6=OFF
+          make -j2
+          sudo make install
+
+      - name: Run QMake
+        shell: bash
+        run: |
+          cd src
+          qmake starc.pro DEFINES+="DEV_BUILD=$DEV_BUILD"
+
+      - name: Build
+        shell: bash
+        run: |
+          cd src
+          make -j$(nproc)
+
+      - name: Make AppImage
+        shell: bash
+        run: |
+          cd build/linux
+          ./make_starc_arm64_appimage.sh ${{env.APP_VERSION}}
+
+      - name: List files in build directory
+        run: ls -la build/linux/
+
+      - name: Collect artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux packages
+          path: build/linux/starc-setup-${{env.APP_VERSION}}-aarch64.AppImage
