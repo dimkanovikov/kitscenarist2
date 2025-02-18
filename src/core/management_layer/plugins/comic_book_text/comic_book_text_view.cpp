@@ -260,8 +260,9 @@ void ComicBookTextView::Implementation::reconfigureTemplate(bool _withModelReini
     const QVector<TextParagraphType> types = {
         TextParagraphType::PageHeading,     TextParagraphType::PanelHeading,
         TextParagraphType::Description,     TextParagraphType::Character,
-        TextParagraphType::Dialogue,        TextParagraphType::InlineNote,
-        TextParagraphType::UnformattedText, TextParagraphType::SequenceHeading,
+        TextParagraphType::Parenthetical,   TextParagraphType::Dialogue,
+        TextParagraphType::InlineNote,      TextParagraphType::UnformattedText,
+        TextParagraphType::SequenceHeading,
     };
     for (const auto type : types) {
         if (!usedTemplate.paragraphStyle(type).isActive()) {

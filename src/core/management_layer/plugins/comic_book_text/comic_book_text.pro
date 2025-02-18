@@ -41,6 +41,7 @@ HEADERS += \
     text/handlers/key_press_handler_facade.h \
     text/handlers/page_handler.h \
     text/handlers/panel_handler.h \
+    text/handlers/parenthetical_handler.h \
     text/handlers/pre_handler.h \
     text/handlers/prepare_handler.h \
     text/handlers/sequence_footer_handler.h \
@@ -63,6 +64,7 @@ SOURCES += \
     text/handlers/key_press_handler_facade.cpp \
     text/handlers/page_handler.cpp \
     text/handlers/panel_handler.cpp \
+    text/handlers/parenthetical_handler.cpp \
     text/handlers/pre_handler.cpp \
     text/handlers/prepare_handler.cpp \
     text/handlers/sequence_footer_handler.cpp \

@@ -13,7 +13,7 @@ namespace KeyProcessingLayer {
 class ParentheticalHandler : public StandardKeyHandler
 {
 public:
-    explicit ParentheticalHandler(Ui::ScreenplayTextEdit* _editor);
+    explicit ParentheticalHandler(Ui::ComicBookTextEdit* _editor);
 
 protected:
     /**

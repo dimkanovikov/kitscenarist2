@@ -634,11 +634,15 @@ SettingsStorage::Implementation::Implementation()
         addComicBookEditorStylesJumpByEnter(TextParagraphType::Description,
                                             TextParagraphType::Description);
         addComicBookEditorStylesJumpByTab(TextParagraphType::Character,
-                                          TextParagraphType::Dialogue);
+                                          TextParagraphType::Parenthetical);
         addComicBookEditorStylesJumpByEnter(TextParagraphType::Character,
                                             TextParagraphType::Dialogue);
+        addComicBookEditorStylesJumpByTab(TextParagraphType::Parenthetical,
+                                          TextParagraphType::Dialogue);
+        addComicBookEditorStylesJumpByEnter(TextParagraphType::Parenthetical,
+                                            TextParagraphType::Dialogue);
         addComicBookEditorStylesJumpByTab(TextParagraphType::Dialogue,
-                                          TextParagraphType::Character);
+                                          TextParagraphType::Parenthetical);
         addComicBookEditorStylesJumpByEnter(TextParagraphType::Dialogue,
                                             TextParagraphType::Description);
         addComicBookEditorStylesJumpByTab(TextParagraphType::InlineNote,
@@ -675,8 +679,12 @@ SettingsStorage::Implementation::Implementation()
                                             TextParagraphType::Description);
         addComicBookEditorStylesChangeByEnter(TextParagraphType::Character,
                                               TextParagraphType::Description);
+        addComicBookEditorStylesChangeByTab(TextParagraphType::Parenthetical,
+                                            TextParagraphType::Dialogue);
+        addComicBookEditorStylesChangeByEnter(TextParagraphType::Parenthetical,
+                                              TextParagraphType::Parenthetical);
         addComicBookEditorStylesChangeByTab(TextParagraphType::Dialogue,
-                                            TextParagraphType::Character);
+                                            TextParagraphType::Parenthetical);
         addComicBookEditorStylesChangeByEnter(TextParagraphType::Dialogue,
                                               TextParagraphType::Description);
         addComicBookEditorStylesChangeByTab(TextParagraphType::InlineNote,
@@ -696,7 +704,8 @@ SettingsStorage::Implementation::Implementation()
         addShortcut(BusinessLayer::TextParagraphType::PanelHeading, "Ctrl+2");
         addShortcut(BusinessLayer::TextParagraphType::Description, "Ctrl+3");
         addShortcut(BusinessLayer::TextParagraphType::Character, "Ctrl+4");
-        addShortcut(BusinessLayer::TextParagraphType::Dialogue, "Ctrl+5");
+        addShortcut(BusinessLayer::TextParagraphType::Parenthetical, "Ctrl+5");
+        addShortcut(BusinessLayer::TextParagraphType::Dialogue, "Ctrl+6");
         addShortcut(BusinessLayer::TextParagraphType::InlineNote, "Ctrl+Shift+0");
         //
         defaultValues.insert(kComponentsComicBookAvailableKey, true);
@@ -710,6 +719,8 @@ SettingsStorage::Implementation::Implementation()
         defaultValues.insert(kComponentsComicBookEditorShowHintsForTertiaryItemsKey, false);
         defaultValues.insert(kComponentsComicBookEditorShowCharacterSuggestionsInEmptyBlockKey,
                              false);
+        defaultValues.insert(kComponentsComicBookEditorUseOpenBracketInDialogueForParentheticalKey,
+                             true);
         //
         // Параметры навигатора сценария
         //

@@ -610,6 +610,7 @@ void SettingsManager::Implementation::loadShortcutsForComicBookSettings()
     blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::PanelHeading));
     blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::Description));
     blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::Character));
+    blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::Parenthetical));
     blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::Dialogue));
     blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::InlineNote));
     blocksJumpsModel->appendRow(blocksJumpsModelRow(TextParagraphType::UnformattedText));
