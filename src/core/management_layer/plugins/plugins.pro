@@ -119,3 +119,7 @@ exists (images_gallery/images_gallery.pro) {
 exists (mind_map/mind_map.pro) {
     SUBDIRS += mind_map
 }
+
+exists (presentation/presentation.pro) {
+    SUBDIRS += presentation
+}

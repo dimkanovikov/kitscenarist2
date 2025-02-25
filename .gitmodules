@@ -79,3 +79,6 @@
 [submodule "src/core/management_layer/plugins/screenplay_series_statistics"]
     path = src/core/management_layer/plugins/screenplay_series_statistics
     url = git@github.com:story-apps/starc-screenplay-series-statistics-plugin.git
+[submodule "src/core/management_layer/plugins/presentation"]
+	path = src/core/management_layer/plugins/presentation
+	url = git@github.com:story-apps/starc-presentation-plugin.git

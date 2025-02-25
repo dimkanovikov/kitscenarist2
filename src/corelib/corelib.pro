@@ -272,6 +272,7 @@ SOURCES += \
     business_layer/model/novel/text/novel_text_model_folder_item.cpp \
     business_layer/model/novel/text/novel_text_model_scene_item.cpp \
     business_layer/model/novel/text/novel_text_model_text_item.cpp \
+    business_layer/model/presentation/presentation_model.cpp \
     business_layer/model/project/project_information_model.cpp \
     business_layer/model/recycle_bin/recycle_bin_model.cpp \
     business_layer/model/screenplay/screenplay_dictionaries_model.cpp \
@@ -638,6 +639,7 @@ HEADERS += \
     business_layer/model/novel/text/novel_text_model_folder_item.h \
     business_layer/model/novel/text/novel_text_model_scene_item.h \
     business_layer/model/novel/text/novel_text_model_text_item.h \
+    business_layer/model/presentation/presentation_model.h \
     business_layer/model/project/project_information_model.h \
     business_layer/model/recycle_bin/recycle_bin_model.h \
     business_layer/model/screenplay/screenplay_dictionaries_model.h \

@@ -2840,6 +2840,8 @@ void ApplicationManager::initConnections()
             });
     connect(d->projectManager.data(), &ProjectManager::exportCurrentDocumentRequested, this,
             [this] { d->exportCurrentDocument(); });
+    connect(d->projectManager.data(), &ProjectManager::importFileRequested, d->importManager.data(),
+            &ImportManager::importFileDataToDocument);
 
     //
     // Менеджер импорта
@@ -2862,6 +2864,9 @@ void ApplicationManager::initConnections()
             &ProjectManager::addScreenplay);
     connect(d->importManager.data(), &ImportManager::stageplayImported, d->projectManager.data(),
             &ProjectManager::addStageplay);
+    //
+    connect(d->importManager.data(), &ImportManager::importPresentationRequested,
+            d->projectManager.data(), &ProjectManager::importPresentation);
 
     //
     // Менеджер настроек

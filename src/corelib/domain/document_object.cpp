@@ -77,6 +77,7 @@ const QHash<DocumentObjectType, QByteArray> kDocumentObjectTypeToMimeType = {
     { DocumentObjectType::SimpleText, "application/x-starc/document/text" },
     { DocumentObjectType::MindMap, "application/x-starc/document/mind-map" },
     { DocumentObjectType::ImagesGallery, "application/x-starc/document/images-gallery" },
+    { DocumentObjectType::Presentation, "application/x-starc/document/presentation" },
 };
 const QHash<DocumentObjectType, QString> kDocumentObjectTypeToIcon = {
     { DocumentObjectType::Undefined, u8"\U000f078b" },
@@ -127,6 +128,7 @@ const QHash<DocumentObjectType, QString> kDocumentObjectTypeToIcon = {
     { DocumentObjectType::SimpleText, u8"\U000F021A" },
     { DocumentObjectType::MindMap, u8"\U000F04AA" },
     { DocumentObjectType::ImagesGallery, u8"\U000F024F" },
+    { DocumentObjectType::Presentation, u8"\U000F0428" },
 };
 } // namespace
 

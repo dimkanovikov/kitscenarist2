@@ -7,6 +7,7 @@ namespace BusinessLayer {
 class AbstractImageWrapper;
 class AbstractModel;
 class StructureModel;
+class StructureModelItem;
 } // namespace BusinessLayer
 
 namespace Domain {
